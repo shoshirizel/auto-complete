@@ -3,12 +3,18 @@ import string
 import re
 from auto_complete_data import AutoCompleteData
 
+data_dict = {}
+search_dict = {}
 
-with open("data/data.json") as data_file:
-    data_dict = json.load(data_file)
 
-with open("data/search_file.json") as search_file:
-    search_dict = json.load(search_file)
+def open_files():
+    with open("data/data.json") as data_file:
+        global data_dict
+        data_dict = json.load(data_file)
+
+    with open("data/search_file.json") as search_file:
+        global search_dict
+        search_dict = json.load(search_file)
 
 
 def fix_sentence(sentence):
@@ -28,7 +34,6 @@ def create_auto_complete(completion_list, search_input):
 
 
 def get_best_completions(search_input):
-
     fix_input = fix_sentence(search_input)
     if not search_dict.get(fix_input):
         return []
