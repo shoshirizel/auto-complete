@@ -1,40 +1,35 @@
+import json
 import string
-
+import re
 from auto_complete_data import AutoCompleteData
 
-data = {1: "a y", 2: "asd"}
 
-trie = {"a": {" ": {"y": {"$": [{"id": 1, "score": 3, "offset": 7}]}, "$": [{"id": 1, "score": 3, "offset": 7}]},
-              "s": {"d": {"$": [2]}, "$": [2]},
-              "$": [1, 2]}}
+with open("data/data.json") as data_file:
+    data_dict = json.load(data_file)
+
+with open("data/search_file.json") as search_file:
+    search_dict = json.load(search_file)
 
 
 def fix_sentence(sentence):
     s = sentence[:]
     s.translate(str.maketrans('', '', string.punctuation))
-    " ".join(s.split(" "))  # TODO
+    s = re.sub(' +', ' ', s)
     return s.lower()
 
 
-def create_auto_complete(search_input, completion_list):
-    objects_completion_list = []
-
+def create_auto_complete(completion_list, search_input):
+    object_completion_list = []
     for completion in completion_list:
-        objects_completion_list.append(
-            AutoCompleteData(data[completion["id"]],
-                             search_input, completion["score"],
-                             completion["offset"]))
+        object_completion_list.append(AutoCompleteData(
+            data_dict[str(completion["id"])], search_input, completion["score"], completion["offset"]))
 
-    return objects_completion_list
+    return object_completion_list
 
 
 def get_best_completions(search_input):
-    global trie
-    curr = trie
-    for letter in fix_sentence(search_input):
-        curr = curr[letter]
 
-    return create_auto_complete(search_input, curr["$"])
-
-
-print(get_best_completions("a y")[0].score)
+    fix_input = fix_sentence(search_input)
+    if not search_dict.get(fix_input):
+        return []
+    return create_auto_complete(search_dict[fix_sentence(fix_input)], search_input)
