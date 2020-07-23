@@ -34,7 +34,7 @@ def create_auto_complete(completion_list, search_input):
 
 
 def get_best_completions(search_input):
-    fix_input = fix_sentence(search_input)
+    fix_input = fix_sentence(search_input)[:5]
     if not search_dict.get(fix_input):
         return []
     return create_auto_complete(search_dict[fix_sentence(fix_input)], search_input)
