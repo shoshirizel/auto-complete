@@ -1,31 +1,20 @@
+import json
 import os
 
 
-walk_dir = "./technology_texts"
+def go_on_files():
+    list_of_files = list()
+    for (dir_path, dir_names, file_names) in os.walk("technology_texts"):
+        list_of_files += [os.path.join(dir_path, file) for file in file_names]
 
+    for file in list_of_files:
+        data_dict = {}
+        with open(file, encoding="utf8") as the_file:
+            sentences = the_file.read().split("\n")
+        for index, sentence in enumerate(sentences):
+            data_dict[index] = sentence
 
-print('walk_dir = ' + walk_dir)
+    with open("data.json", "w") as data_file:
+        json.dump(data_dict, data_file)
 
-# If your current working directory may change during script execution, it's recommended to
-# immediately convert program arguments to an absolute path. Then the variable root below will
-# be an absolute path as well. Example:
-# walk_dir = os.path.abspath(walk_dir)
-# print('walk_dir (absolute) = ' + os.path.abspath(walk_dir))
-
-for root, subdirs, files in os.walk(walk_dir):
-    list_file_path = os.path.join(root, 'my-directory-list.txt')
-
-    with open(list_file_path, 'wb') as list_file:
-        for subdir in subdirs:
-            print('\t- subdirectory ' + subdir)
-
-        for filename in files:
-            file_path = os.path.join(root, filename)
-
-            print('\t- file %s (full path: %s)' % (filename, file_path))
-
-            with open(file_path, 'rb') as f:
-                f_content = f.read()
-                list_file.write(('The file %s contains:\n' % filename).encode('utf-8'))
-                list_file.write(f_content)
-                list_file.write(b'\n')
+    return data_dict

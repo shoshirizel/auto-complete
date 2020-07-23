@@ -1,16 +1,10 @@
 import json
 from string import ascii_lowercase
 
+from data.insert_to_json import go_on_files
 from search import fix_sentence
 
-with open("data.json", "w") as data_file:
-    data_dict = {}
-    with open("contents.txt") as source_file:
-        sentences_list = source_file.read().split("\n")
-        sentences_list = list(filter(None, (line for line in sentences_list)))
-        for i, sentence in enumerate(sentences_list):
-            data_dict[i] = sentence
-        json.dump(data_dict, data_file)
+data_dict = go_on_files()
 
 
 def insert(d, id_, inp, score, offset):
@@ -55,7 +49,7 @@ def insert_with_add(d, id_, s, index, letter, offset):  # TODO: in last place?
 
 
 def insert_with_replace(d, id_, s, index, letter, offset):
-    if letter == s[index]:
+    if letter != s[index]:
         s_replace = s[:index] + letter + s[index + 1:] if index + 1 < len(s) else s[:index] + letter
         if index < 4:
             score = (2 * len(s) - (10 - 2 * index))
@@ -76,7 +70,7 @@ def with_mistakes(d, id_, s, offset):
 
 def insert_substrings(d, id_):
     for start_index in range(len(data_dict[id_])):
-        for end_index in range(start_index, len(data_dict[id_])):
+        for end_index in range(start_index, min(len(data_dict[id_]), start_index + 5)):
             # insert(d, id_, data_dict[id_][start_index: end_index], (end_index - start_index) * 2, start_index)
             with_mistakes(d, id_, data_dict[id_][start_index: end_index], start_index * -1)
 
