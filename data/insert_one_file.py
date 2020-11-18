@@ -30,7 +30,10 @@ def insert(d, id_, inp, score, offset):
 
 
 def insert_with_delete(d, id_, s, index, offset):
-    s_delete = s[:index] + s[index + 1:] if index + 1 < len(s) else s[:index]
+    if index + 1 < len(s):
+        s_delete = s[:index] + s[index + 1:]  
+    else:
+        s_delete = s[:index]
     if index < 4:
         score = (2 * len(s) - (10 - 2 * index))
     else:
@@ -50,7 +53,10 @@ def insert_with_add(d, id_, s, index, letter, offset):  # TODO: in last place?
 
 def insert_with_replace(d, id_, s, index, letter, offset):
     if letter != s[index]:
-        s_replace = s[:index] + letter + s[index + 1:] if index + 1 < len(s) else s[:index] + letter
+        if index + 1 < len(s):
+            s_replace = s[:index] + letter + s[index + 1:]  
+        else:
+            s_replace = s[:index] + letter
         if index < 4:
             score = (2 * len(s) - (10 - 2 * index))
         else:
@@ -70,8 +76,9 @@ def with_mistakes(d, id_, s, offset):
 
 def insert_substrings(d, id_):
     for start_index in range(len(data_dict[id_])):
-        for end_index in range(start_index, min(len(data_dict[id_]), start_index + 5)):
-            # insert(d, id_, data_dict[id_][start_index: end_index], (end_index - start_index) * 2, start_index)
+        for end_index in range(start_index, 
+                               min(len(data_dict[id_]), 
+                                   start_index + 5)):
             with_mistakes(d, id_, data_dict[id_][start_index: end_index], start_index * -1)
 
 
