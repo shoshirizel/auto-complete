@@ -28,7 +28,9 @@ def create_auto_complete(completion_list, search_input):
     object_completion_list = []
     for completion in completion_list:
         object_completion_list.append(AutoCompleteData(
-            data_dict[str(completion["id"])], search_input, completion["score"], completion["offset"]))
+            data_dict[str(completion["id"])],
+            search_input, completion["score"],
+            completion["offset"]))
 
     return object_completion_list
 
@@ -37,4 +39,6 @@ def get_best_completions(search_input):
     fix_input = fix_sentence(search_input)[:5]
     if not search_dict.get(fix_input):
         return []
-    return create_auto_complete(search_dict[fix_sentence(fix_input)], search_input)
+    return create_auto_complete(
+        search_dict[fix_sentence(fix_input)],
+                                search_input)
