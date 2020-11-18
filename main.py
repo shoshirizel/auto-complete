@@ -17,7 +17,8 @@ def output_fun(suggestions_list):
     print("Here are the suggestions")
     for index in range(len(suggestions_list)):
         print(
-            f"{index + 1}. {suggestions_list[index].completed_sentence} \n  score: {suggestions_list[index].score} \n "
+            f"{index + 1}. {suggestions_list[index].completed_sentence} \n"
+            f"score: {suggestions_list[index].score} \n "
             f" offset: {suggestions_list[index].offset * -1}")
 
 
