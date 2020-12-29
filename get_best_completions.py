@@ -20,11 +20,6 @@ def fix_sentence(sentence):
 
 class Complete:
     def __init__(self):
-        self.data_dict = {}
-        self.search_dict = {}
-        self.open_files()
-
-    def open_files(self):
         with (DATA_FOLDER / "data.json").open() as data_file:
             self.data_dict = json.load(data_file)
 

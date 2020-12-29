@@ -1,9 +1,9 @@
-import search
+import get_best_completions
 
 
 def input_fun():
     print("Loading the files and and preparing the system...")
-    complete = search.Complete()
+    complete = get_best_completions.Complete()
     search_input = 0
     while search_input != "-1":
         print("The system is ready. Enter your text:")
