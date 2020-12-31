@@ -1,26 +1,24 @@
+""""
+Auto - Complete Project
+Receives a sentence from user
+and gives up to 5 completions.
+Allows one mistake, omits punctuations.
+"""
+
 import get_best_completions
+from cli import Cli
+
+QUIT_REQUEST = "-1"  # The input to quit from program.
 
 
-def input_fun():
-    print("Loading the files and and preparing the system...")
+def auto_complete():
+    cli = Cli()
     complete = get_best_completions.Complete()
-    search_input = 0
-    while search_input != "-1":
-        print("The system is ready. Enter your text:")
-        search_input = input()
-        suggestion_list = complete.get_best_completions(search_input)
-        output_fun(suggestion_list)
-        print(search_input)
-
-
-def output_fun(suggestions_list):
-    print("Here are the suggestions")
-    for index in range(len(suggestions_list)):
-        print(
-            f"{index + 1}. {suggestions_list[index].completed_sentence} \n"
-            f"  score: {suggestions_list[index].score} \n "
-            f" offset: {suggestions_list[index].offset * -1}")
+    input_ = cli.input()
+    while input_ != QUIT_REQUEST:
+        cli.output(complete.get_best_completions(input_))
+        input_ = cli.input()
 
 
 if __name__ == '__main__':
-    input_fun()
+    auto_complete()
